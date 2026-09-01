@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#0c0e17">
-  <title>BeatLooper Pro - לופר קולי, שירה וביטים</title>
+  <title>BeatLooper Pro - לופר קולי וביטים</title>
   <style>
     :root {
       --bg-main: #0c0e17;
@@ -31,9 +31,1742 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
     }
 
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 12px 24px 12px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 2px 10px 2px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--accent-magenta), var(--accent-cyan));
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
+    }
+
+    .app-title {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #ffffff, #b5c6e8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Audio Banner */
+    .audio-banner {
+      background: linear-gradient(135deg, #1f2945, #141c30);
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      margin: 10px 0 6px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 2px 12px rgba(0, 240, 255, 0.2);
+      transition: all 0.2s;
+    }
+
+    .audio-banner.active-banner {
+      background: rgba(0, 255, 136, 0.12);
+      border-color: var(--accent-emerald);
+      box-shadow: 0 2px 10px rgba(0, 255, 136, 0.2);
+    }
+
+    .audio-banner-text {
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Master Control Panel */
+    .master-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      margin: 6px 0 10px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    }
+
+    .tempo-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .bpm-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 64px;
+      background: #0f121f;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .bpm-number {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent-cyan);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+
+    .bpm-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .tempo-controls {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: #20273d;
+      outline: none;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-cyan);
+      border: 2px solid #fff;
+    }
+
+    .quick-tempo-btns {
+      display: flex;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .btn-small {
+      background: #20273d;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 5px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+    }
+
+    .btn-small:active {
+      background: var(--accent-cyan);
+      color: #000;
+    }
+
+    .master-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 6px;
+    }
+
+    .btn-pill {
+      background: #20273d;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 9px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-pill:active {
+      transform: scale(0.96);
+    }
+
+    .btn-pill.active {
+      background: linear-gradient(135deg, var(--accent-cyan), #0072ff);
+      color: #000;
+      border-color: transparent;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    }
+
+    .btn-pill.metro-active {
+      background: var(--accent-amber);
+      color: #000;
+      border-color: transparent;
+    }
+
+    .btn-pill.drum-active {
+      background: var(--accent-purple);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* Beat Indicator */
+    .beat-container {
+      display: flex;
+      gap: 4px;
+      background: #0f121f;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      margin-bottom: 10px;
+    }
+
+    .beat-box {
+      flex: 1;
+      height: 22px;
+      background: #1d2338;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      transition: all 0.05s ease-out;
+    }
+
+    .beat-box.active-beat {
+      background: var(--accent-cyan);
+      color: #000;
+      box-shadow: 0 0 10px var(--accent-cyan);
+      transform: scale(1.04);
+    }
+
+    .beat-box.active-downbeat {
+      background: var(--accent-magenta);
+      color: #fff;
+      box-shadow: 0 0 12px var(--accent-magenta);
+      transform: scale(1.06);
+    }
+
+    /* Section Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 9px 4px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .tab-btn.active-tab {
+      background: #232b47;
+      color: #fff;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    }
+
+    /* Tracks Grid */
+    .tracks-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .track-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 72px 1fr 34px;
+      gap: 10px;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .track-card.recording {
+      border-color: var(--accent-magenta);
+      background: #1f1325;
+      box-shadow: 0 0 14px rgba(255, 0, 119, 0.25);
+    }
+
+    .track-card.playing {
+      border-color: rgba(0, 255, 136, 0.4);
+    }
+
+    .track-card.armed {
+      border-color: var(--accent-amber);
+      animation: pulse-border 0.8s infinite alternate;
+    }
+
+    @keyframes pulse-border {
+      from { border-color: var(--accent-amber); }
+      to { border-color: rgba(255, 184, 0, 0.2); }
+    }
+
+    .track-action-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .btn-record-pad {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 3px solid #28314e;
+      background: #1a2034;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: all 0.15s ease;
+    }
+
+    .btn-record-pad:active {
+      transform: scale(0.92);
+    }
+
+    .btn-record-pad .icon {
+      font-size: 22px;
+    }
+
+    .btn-record-pad.state-empty .icon {
+      color: var(--accent-magenta);
+    }
+
+    .btn-record-pad.state-armed {
+      background: #3b2b07;
+      border-color: var(--accent-amber);
+      color: var(--accent-amber);
+      animation: pulse-pad 0.6s infinite alternate;
+    }
+
+    .btn-record-pad.state-recording {
+      background: var(--accent-magenta);
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 0 16px var(--accent-magenta);
+    }
+
+    .btn-record-pad.state-playing {
+      background: #0d3824;
+      border-color: var(--accent-emerald);
+      color: var(--accent-emerald);
+    }
+
+    @keyframes pulse-pad {
+      from { transform: scale(0.98); }
+      to { transform: scale(1.05); }
+    }
+
+    .track-status-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .track-controls-center {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .track-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .track-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .track-waveform-bar {
+      width: 100%;
+      height: 10px;
+      background: #0f121f;
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .track-progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald));
+      border-radius: 5px;
+      transition: width 0.05s linear;
+    }
+
+    .track-vol-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .track-vol-row span {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .track-buttons-side {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-track-tool {
+      background: #20273d;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 30px;
+      height: 26px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-track-tool.active-mute {
+      background: #e63946;
+      color: #fff;
+      border-color: #e63946;
+    }
+
+    .btn-track-tool.active-solo {
+      background: var(--accent-amber);
+      color: #000;
+      border-color: var(--accent-amber);
+    }
+
+    /* Vocal Suite Section */
+    .vocal-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    }
+
+    .vocal-hero-btn {
+      background: linear-gradient(135deg, #e63946, var(--accent-magenta));
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(255, 0, 119, 0.4);
+      transition: all 0.15s ease;
+    }
+
+    .vocal-hero-btn.recording-active {
+      background: #111;
+      border: 2px solid var(--accent-magenta);
+      color: var(--accent-magenta);
+      animation: pulse-border 0.6s infinite alternate;
+    }
+
+    .fx-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .fx-card {
+      background: #0f121f;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .fx-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-cyan);
+    }
+
+    .fx-val {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Drum Machine Section */
+    .section-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin: 10px 0 6px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-main);
+    }
+
+    .drum-pads-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .drum-pad {
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      height: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+
+    .drum-pad:active {
+      transform: scale(0.92);
+      border-color: var(--accent-cyan);
+      background: #202844;
+    }
+
+    .drum-pad-title {
+      font-size: 11px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .drum-pad-sub {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding-top: 12px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-area">
+      <div class="logo-badge">⚡</div>
+      <div class="app-title">BeatLooper Pro</div>
+    </div>
+    <div style="display: flex; gap: 6px;">
+      <button class="btn-small" onclick="exportWav()" style="color: var(--accent-emerald); font-weight: 800;">ייצוא WAV 💾</button>
+    </div>
+  </header>
+
+  <!-- Tap to Activate Audio Banner -->
+  <div id="audioBanner" class="audio-banner" onclick="startAudioEngine()">
+    <div class="audio-banner-text">
+      <span id="audioBannerIcon">🔊</span>
+      <span id="audioBannerText">לחץ כאן להפעלת מנוע השמע</span>
+    </div>
+    <span style="font-size: 11px; color: var(--accent-cyan);">🎧 מומלץ אוזניות</span>
+  </div>
+
+  <!-- Master Controls -->
+  <div class="master-panel">
+    <div class="tempo-section">
+      <div class="bpm-display">
+        <span id="bpmVal" class="bpm-number">100</span>
+        <span class="bpm-label">BPM</span>
+      </div>
+      <div class="tempo-controls">
+        <input type="range" id="bpmSlider" class="slider" min="60" max="180" value="100">
+        <div class="quick-tempo-btns">
+          <button class="btn-small" onclick="adjustBpm(-5)">-5</button>
+          <button class="btn-small" onclick="adjustBpm(-1)">-1</button>
+          <button class="btn-small" onclick="adjustBpm(1)">+1</button>
+          <button class="btn-small" onclick="adjustBpm(5)">+5</button>
+          <button class="btn-small" onclick="tapTempo()">Tap</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="master-row">
+      <button id="btnPlayMaster" class="btn-pill active" onclick="togglePlayMaster()">
+        <span id="playIcon">⏹️</span>
+        <span id="playText">מנגן</span>
+      </button>
+      <button id="btnMetronome" class="btn-pill metro-active" onclick="toggleMetronome()">
+        <span>🔔</span>
+        <span id="metroText">קליק: פעיל</span>
+      </button>
+      <button id="btnDrumTrack" class="btn-pill" onclick="toggleAutoDrums()">
+        <span>🥁</span>
+        <span id="drumTrackText">ביט: כבוי</span>
+      </button>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 2px;">
+      <span style="font-size: 11px; color: var(--text-muted);">אורך לופ מרכזי:</span>
+      <button id="btnBars" class="btn-small" style="max-width: 140px; font-weight: 800; color: var(--accent-cyan);" onclick="cycleBars()">
+        <span id="barsText">2 תיבות (8 ביטים)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Beat Indicator Bar -->
+  <div class="beat-container" id="beatBars"></div>
+
+  <!-- Section Tabs -->
+  <div class="tabs-nav">
+    <button id="tabLoopsBtn" class="tab-btn active-tab" onclick="switchTab('loops')">
+      <span>🔄</span>
+      <span>ערוצי לופ (4)</span>
+    </button>
+    <button id="tabVocalsBtn" class="tab-btn" onclick="switchTab('vocals')">
+      <span>🎤</span>
+      <span>שירה ואפקטים</span>
+    </button>
+  </div>
+
+  <!-- TAB 1: Loops Grid -->
+  <div id="tabLoopsContent">
+    <div class="tracks-grid" id="tracksContainer"></div>
+
+    <div class="section-title">
+      <span>פדים למקצב חי (Drum Pads)</span>
+      <span style="font-size: 10px; color: var(--accent-cyan);">הקש להשמעה</span>
+    </div>
+    <div class="drum-pads-grid">
+      <div class="drum-pad" onpointerdown="triggerDrum('kick')">
+        <div class="drum-pad-title">KICK</div>
+        <div class="drum-pad-sub">בס</div>
+      </div>
+      <div class="drum-pad" onpointerdown="triggerDrum('snare')">
+        <div class="drum-pad-title">SNARE</div>
+        <div class="drum-pad-sub">סנייר</div>
+      </div>
+      <div class="drum-pad" onpointerdown="triggerDrum('hihat')">
+        <div class="drum-pad-title">HI-HAT</div>
+        <div class="drum-pad-sub">מצילה</div>
+      </div>
+      <div class="drum-pad" onpointerdown="triggerDrum('clap')">
+        <div class="drum-pad-title">CLAP</div>
+        <div class="drum-pad-sub">כפיים</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: Vocal Studio -->
+  <div id="tabVocalsContent" class="hidden">
+    <div class="vocal-panel">
+      
+      <button id="btnSongRec" class="vocal-hero-btn" onclick="toggleSongRecording()">
+        <span id="songRecIcon" style="font-size: 20px;">🔴</span>
+        <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: right;">
+          <span id="songRecTitle">הקלטת שיר מלא (שירה מעל כל הביט)</span>
+          <span id="songRecTimer" style="font-size: 11px; opacity: 0.85; font-variant-numeric: tabular-nums;">לחץ להתחלת הקלטה חיה</span>
+        </div>
+      </button>
+
+      <div class="section-title" style="margin: 2px 0 0 0;">
+        <span>אפקטים קוליים לשירה (Vocal FX)</span>
+      </div>
+
+      <div class="fx-grid">
+        <div class="fx-card">
+          <div class="fx-header">
+            <span>הדהוד (Reverb)</span>
+            <span id="reverbValText" class="fx-val">30%</span>
+          </div>
+          <input type="range" class="slider" min="0" max="1" step="0.05" value="0.3" 
+                 oninput="setReverbGain(this.value)">
+        </div>
+
+        <div class="fx-card">
+          <div class="fx-header">
+            <span>הד (Echo / Delay)</span>
+            <span id="delayValText" class="fx-val">20%</span>
+          </div>
+          <input type="range" class="slider" min="0" max="0.8" step="0.05" value="0.2" 
+                 oninput="setDelayGain(this.value)">
+        </div>
+
+        <div class="fx-card">
+          <div class="fx-header">
+            <span>עוצמת מיקרופון שירה</span>
+            <span id="vocalVolText" class="fx-val">100%</span>
+          </div>
+          <input type="range" class="slider" min="0" max="1.5" step="0.05" value="1.0" 
+                 oninput="setVocalInputGain(this.value)">
+        </div>
+
+        <div class="fx-card">
+          <div class="fx-header">
+            <span>מוניטור באוזניות 🎧</span>
+            <span id="monitorStatusText" class="fx-val">כבוי</span>
+          </div>
+          <button id="btnMonitorToggle" class="btn-small" style="margin-top: 4px;" onclick="toggleMonitoring()">
+            הפעל שמיעה עצמית
+          </button>
+        </div>
+      </div>
+
+      <div id="vocalTakeContainer" class="hidden" style="background: #0f121f; border: 1px solid var(--accent-emerald); border-radius: var(--radius-sm); padding: 10px; margin-top: 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 12px; font-weight: 800; color: var(--accent-emerald);">✨ הוקלט טייק שיר מלא!</span>
+          <button class="btn-small" onclick="downloadLastTake()" style="background: var(--accent-emerald); color: #000; font-weight: 900;">הורד שיר (WAV) 💾</button>
+        </div>
+        <audio id="vocalTakeAudioPlayer" controls style="width: 100%; height: 34px; border-radius: 4px;"></audio>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    BeatLooper Pro • Web Audio Looper
+  </footer>
+
+  <script>
+    let audioCtx = null;
+    let micStream = null;
+    let micSource = null;
+    let recorderNode = null;
+    let isMasterPlaying = true;
+    let isMetronomeOn = true;
+    let isAutoDrumOn = false;
+    let bpm = 100;
+    let bars = 2;
+    const beatsPerBar = 4;
+    let totalBeats = bars * beatsPerBar;
+
+    let masterGain = null;
+    let metroGain = null;
+    let drumGain = null;
+
+    let vocalPreGain = null;
+    let vocalHpFilter = null;
+    let vocalDelayNode = null;
+    let vocalDelayFeedback = null;
+    let vocalDelayGain = null;
+    let vocalReverbConvolver = null;
+    let vocalReverbGain = null;
+    let vocalMonitorGain = null;
+    let isMonitoringOn = false;
+
+    let isSongRecording = false;
+    let songRecChunks = [];
+    let songRecSamples = 0;
+    let songRecStartTime = 0;
+    let songRecTimerInterval = null;
+    let lastRenderedSongBlob = null;
+
+    const NUM_TRACKS = 4;
+    const tracks = [];
+
+    let currentBeat = 0;
+    let nextBeatTime = 0;
+    let timerId = null;
+    let tapTimes = [];
+
+    function triggerDrum(type) {
+      startAudioEngine();
+      playDrum(type, 0);
+    }
+
+    function playDrum(type, time = 0) {
+      if (!audioCtx) return;
+      const t = time || audioCtx.currentTime;
+
+      if (type === 'kick') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(140, t);
+        osc.frequency.exponentialRampToValueAtTime(0.01, t + 0.35);
+        gain.gain.setValueAtTime(1, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+        osc.connect(gain);
+        gain.connect(drumGain || masterGain);
+        osc.start(t);
+        osc.stop(t + 0.35);
+      } else if (type === 'snare') {
+        const bufferSize = Math.floor(audioCtx.sampleRate * 0.2);
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 1000;
+        const noiseGain = audioCtx.createGain();
+        noiseGain.gain.setValueAtTime(0.8, t);
+        noiseGain.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+        noise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(drumGain || masterGain);
+
+        const osc = audioCtx.createOscillator();
+        const oscGain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(180, t);
+        osc.frequency.exponentialRampToValueAtTime(40, t + 0.1);
+        oscGain.gain.setValueAtTime(0.7, t);
+        oscGain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+        osc.connect(oscGain);
+        oscGain.connect(drumGain || masterGain);
+
+        noise.start(t);
+        osc.start(t);
+        noise.stop(t + 0.2);
+        osc.stop(t + 0.15);
+      } else if (type === 'hihat') {
+        const bufferSize = Math.floor(audioCtx.sampleRate * 0.05);
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 7000;
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.5, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(drumGain || masterGain);
+        noise.start(t);
+        noise.stop(t + 0.05);
+      } else if (type === 'clap') {
+        const bufferSize = Math.floor(audioCtx.sampleRate * 0.25);
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1200;
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.7, t);
+        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.25);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(drumGain || masterGain);
+        noise.start(t);
+        noise.stop(t + 0.25);
+      }
+    }
+
+    function playClick(time, isDownbeat) {
+      if (!isMetronomeOn || !audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = isDownbeat ? 1200 : 800;
+      gain.gain.setValueAtTime(0.35, time);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.04);
+      osc.connect(gain);
+      gain.connect(metroGain);
+      osc.start(time);
+      osc.stop(time + 0.05);
+    }
+
+    function createReverbImpulse(duration = 1.8, decay = 2.4) {
+      try {
+        const sampleRate = audioCtx.sampleRate || 44100;
+        const length = Math.floor(sampleRate * duration);
+        const impulse = audioCtx.createBuffer(2, length, sampleRate);
+        const left = impulse.getChannelData(0);
+        const right = impulse.getChannelData(1);
+
+        for (let i = 0; i < length; i++) {
+          const n = i;
+          left[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+          right[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, decay);
+        }
+        return impulse;
+      } catch(e) {
+        return null;
+      }
+    }
+
+    async function startAudioEngine() {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+
+        if (!audioCtx) {
+          audioCtx = new AudioContextClass();
+        }
+
+        if (audioCtx.state === 'suspended') {
+          await audioCtx.resume();
+        }
+
+        const banner = document.getElementById('audioBanner');
+        const bannerText = document.getElementById('audioBannerText');
+        const bannerIcon = document.getElementById('audioBannerIcon');
+        if (banner) {
+          banner.classList.add('active-banner');
+          bannerIcon.textContent = '🟢';
+          bannerText.textContent = 'מנוע שמע פעיל ומסונכרן';
+        }
+
+        if (!masterGain) {
+          masterGain = audioCtx.createGain();
+          masterGain.gain.value = 1.0;
+          masterGain.connect(audioCtx.destination);
+
+          metroGain = audioCtx.createGain();
+          metroGain.gain.value = 0.7;
+          metroGain.connect(masterGain);
+
+          drumGain = audioCtx.createGain();
+          drumGain.gain.value = 0.9;
+          drumGain.connect(masterGain);
+
+          vocalPreGain = audioCtx.createGain();
+          vocalPreGain.gain.value = 1.0;
+
+          vocalHpFilter = audioCtx.createBiquadFilter();
+          vocalHpFilter.type = 'highpass';
+          vocalHpFilter.frequency.value = 110;
+
+          vocalReverbConvolver = audioCtx.createConvolver();
+          const rBuf = createReverbImpulse(1.8, 2.4);
+          if (rBuf) vocalReverbConvolver.buffer = rBuf;
+          vocalReverbGain = audioCtx.createGain();
+          vocalReverbGain.gain.value = 0.3;
+
+          vocalDelayNode = audioCtx.createDelay();
+          vocalDelayNode.delayTime.value = 0.32;
+          vocalDelayFeedback = audioCtx.createGain();
+          vocalDelayFeedback.gain.value = 0.35;
+          vocalDelayGain = audioCtx.createGain();
+          vocalDelayGain.gain.value = 0.2;
+
+          vocalDelayNode.connect(vocalDelayFeedback);
+          vocalDelayFeedback.connect(vocalDelayNode);
+          vocalDelayNode.connect(vocalDelayGain);
+
+          vocalMonitorGain = audioCtx.createGain();
+          vocalMonitorGain.gain.value = 0;
+          vocalMonitorGain.connect(masterGain);
+        }
+
+        if (!timerId) {
+          nextBeatTime = audioCtx.currentTime + 0.05;
+          scheduler();
+        }
+
+      } catch (err) {
+        console.error("Audio init error:", err);
+      }
+    }
+
+    async function ensureMicAccess() {
+      await startAudioEngine();
+      if (micStream) return true;
+
+      if (navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: false,
+              noiseSuppression: false,
+              autoGainControl: false
+            }
+          });
+        } catch (err) {
+          try {
+            micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          } catch (e) {
+            alert("לא ניתנה הרשאת מיקרופון. כדי להקליט, יש לאשר את המיקרופון בהגדרות הדפדפן.");
+            return false;
+          }
+        }
+
+        if (micStream && audioCtx && !micSource) {
+          micSource = audioCtx.createMediaStreamSource(micStream);
+          micSource.connect(vocalPreGain);
+          vocalPreGain.connect(vocalHpFilter);
+
+          if (vocalReverbConvolver && vocalReverbConvolver.buffer) {
+            vocalHpFilter.connect(vocalReverbConvolver);
+            vocalReverbConvolver.connect(vocalReverbGain);
+            vocalReverbGain.connect(vocalMonitorGain);
+          }
+
+          vocalHpFilter.connect(vocalDelayNode);
+          vocalDelayGain.connect(vocalMonitorGain);
+          vocalHpFilter.connect(vocalMonitorGain);
+
+          initLooperRecorder();
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function initLooperRecorder() {
+      if (recorderNode || !audioCtx) return;
+      try {
+        recorderNode = audioCtx.createScriptProcessor(4096, 1, 1);
+        recorderNode.onaudioprocess = function(e) {
+          if (!micSource) return;
+          const input = e.inputBuffer.getChannelData(0);
+          
+          tracks.forEach(track => {
+            if (track.state === 'recording') {
+              const chunk = new Float32Array(input.length);
+              chunk.set(input);
+              track.recordedChunks.push(chunk);
+              track.recordedSamples += input.length;
+            }
+          });
+
+          if (isSongRecording) {
+            const chunk = new Float32Array(input.length);
+            chunk.set(input);
+            songRecChunks.push(chunk);
+            songRecSamples += input.length;
+          }
+        };
+
+        if (micSource) {
+          micSource.connect(recorderNode);
+          const silentGain = audioCtx.createGain();
+          silentGain.gain.value = 0;
+          recorderNode.connect(silentGain);
+          silentGain.connect(audioCtx.destination);
+        }
+      } catch(e) {}
+    }
+
+    for (let i = 0; i < NUM_TRACKS; i++) {
+      tracks.push({
+        id: i,
+        name: `ערוץ ${i + 1}`,
+        state: 'empty',
+        isMuted: false,
+        isSolo: false,
+        volume: 0.9,
+        gainNode: null,
+        audioBuffer: null,
+        currentSource: null,
+        recordedChunks: [],
+        recordedSamples: 0
+      });
+    }
+
+    const lookahead = 25.0;
+    const scheduleAheadTime = 0.1;
+
+    function scheduler() {
+      if (!isMasterPlaying || !audioCtx) {
+        timerId = setTimeout(scheduler, lookahead);
+        return;
+      }
+
+      while (nextBeatTime < audioCtx.currentTime + scheduleAheadTime) {
+        scheduleBeat(currentBeat, nextBeatTime);
+        advanceBeat();
+      }
+
+      timerId = setTimeout(scheduler, lookahead);
+    }
+
+    function advanceBeat() {
+      const secondsPerBeat = 60.0 / bpm;
+      nextBeatTime += secondsPerBeat;
+      currentBeat = (currentBeat + 1) % totalBeats;
+    }
+
+    function scheduleBeat(beatNumber, time) {
+      const isCycleStart = beatNumber === 0;
+      const beatInBar = beatNumber % beatsPerBar;
+
+      playClick(time, beatInBar === 0);
+
+      if (isAutoDrumOn) {
+        playAutoDrumPattern(beatNumber, time);
+      }
+
+      if (isCycleStart) {
+        const loopDuration = (60.0 / bpm) * totalBeats;
+        
+        tracks.forEach(track => {
+          if (track.state === 'recording') {
+            finalizeRecording(track, loopDuration);
+          }
+
+          if (track.state === 'armed') {
+            track.state = 'recording';
+            track.recordedChunks = [];
+            track.recordedSamples = 0;
+            updateTrackUI(track.id);
+          }
+
+          if (track.state === 'playing' && track.audioBuffer) {
+            playTrackLoop(track, time, loopDuration);
+          }
+        });
+      }
+
+      const delay = Math.max(0, (time - audioCtx.currentTime) * 1000);
+      setTimeout(() => {
+        highlightBeatUI(beatNumber);
+      }, delay);
+    }
+
+    function playAutoDrumPattern(beatIndex, time) {
+      const beatInBar = beatIndex % beatsPerBar;
+      const secondsPerBeat = 60.0 / bpm;
+      
+      if (beatInBar === 0 || beatInBar === 2) {
+        playDrum('kick', time);
+      }
+      if (beatInBar === 1 || beatInBar === 3) {
+        playDrum('snare', time);
+      }
+      playDrum('hihat', time);
+      playDrum('hihat', time + (secondsPerBeat / 2));
+    }
+
+    function playTrackLoop(track, time, loopDuration) {
+      if (!track.audioBuffer || !audioCtx) return;
+      
+      if (!track.gainNode) {
+        track.gainNode = audioCtx.createGain();
+        track.gainNode.connect(masterGain);
+      }
+      
+      applyTrackVolume(track);
+
+      const source = audioCtx.createBufferSource();
+      source.buffer = track.audioBuffer;
+      source.connect(track.gainNode);
+      source.start(time);
+      track.currentSource = source;
+    }
+
+    function finalizeRecording(track, loopDuration) {
+      const totalRecorded = track.recordedSamples;
+      if (totalRecorded === 0) {
+        track.state = 'empty';
+        updateTrackUI(track.id);
+        return;
+      }
+
+      const flat = new Float32Array(totalRecorded);
+      let offset = 0;
+      for (let chunk of track.recordedChunks) {
+        flat.set(chunk, offset);
+        offset += chunk.length;
+      }
+
+      const targetLength = Math.floor(audioCtx.sampleRate * loopDuration);
+      const audioBuffer = audioCtx.createBuffer(1, targetLength, audioCtx.sampleRate);
+      const channelData = audioBuffer.getChannelData(0);
+
+      for (let i = 0; i < targetLength; i++) {
+        channelData[i] = i < flat.length ? flat[i] : 0;
+      }
+
+      track.audioBuffer = audioBuffer;
+      track.state = 'playing';
+      track.recordedChunks = [];
+      updateTrackUI(track.id);
+    }
+
+    function applyTrackVolume(track) {
+      if (!track.gainNode) return;
+      const anySolo = tracks.some(t => t.isSolo);
+      if (track.isMuted || (anySolo && !track.isSolo)) {
+        track.gainNode.gain.value = 0;
+      } else {
+        track.gainNode.gain.value = track.volume;
+      }
+    }
+
+    function renderBeatBars() {
+      const container = document.getElementById('beatBars');
+      container.innerHTML = '';
+      for (let i = 0; i < totalBeats; i++) {
+        const div = document.createElement('div');
+        div.className = 'beat-box';
+        div.id = `beat-box-${i}`;
+        const barIdx = Math.floor(i / beatsPerBar) + 1;
+        const beatInBar = (i % beatsPerBar) + 1;
+        div.textContent = `${barIdx}.${beatInBar}`;
+        container.appendChild(div);
+      }
+    }
+
+    function highlightBeatUI(beatIndex) {
+      for (let i = 0; i < totalBeats; i++) {
+        const el = document.getElementById(`beat-box-${i}`);
+        if (el) {
+          el.className = 'beat-box';
+          if (i === beatIndex) {
+            el.classList.add((beatIndex % beatsPerBar === 0) ? 'active-downbeat' : 'active-beat');
+          }
+        }
+      }
+
+      tracks.forEach(track => {
+        if (track.state === 'playing') {
+          const progressPct = ((beatIndex + 1) / totalBeats) * 100;
+          const progEl = document.getElementById(`prog-track-${track.id}`);
+          if (progEl) progEl.style.width = `${progressPct}%`;
+        }
+      });
+    }
+
+    function renderTracks() {
+      const container = document.getElementById('tracksContainer');
+      container.innerHTML = '';
+
+      tracks.forEach(track => {
+        const card = document.createElement('div');
+        card.className = 'track-card';
+        card.id = `card-track-${track.id}`;
+
+        card.innerHTML = `
+          <div class="track-action-side">
+            <button id="btn-pad-${track.id}" class="btn-record-pad state-empty" onclick="handleTrackPadClick(${track.id})">
+              <span class="icon" id="pad-icon-${track.id}">⏺️</span>
+            </button>
+            <span class="track-status-label" id="status-label-${track.id}">ריק</span>
+          </div>
+
+          <div class="track-controls-center">
+            <div class="track-header">
+              <span class="track-title">${track.name}</span>
+            </div>
+            <div class="track-waveform-bar">
+              <div class="track-progress" id="prog-track-${track.id}"></div>
+            </div>
+            <div class="track-vol-row">
+              <span>עוצמה</span>
+              <input type="range" class="slider" min="0" max="1" step="0.05" value="${track.volume}" 
+                     oninput="setTrackVolume(${track.id}, this.value)">
+            </div>
+          </div>
+
+          <div class="track-buttons-side">
+            <button class="btn-track-tool" id="btn-mute-${track.id}" onclick="toggleMute(${track.id})">M</button>
+            <button class="btn-track-tool" id="btn-solo-${track.id}" onclick="toggleSolo(${track.id})">S</button>
+            <button class="btn-track-tool btn-clear" onclick="clearTrack(${track.id})">🗑️</button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function updateTrackUI(trackId) {
+      const track = tracks[trackId];
+      const card = document.getElementById(`card-track-${trackId}`);
+      const pad = document.getElementById(`btn-pad-${trackId}`);
+      const icon = document.getElementById(`pad-icon-${trackId}`);
+      const label = document.getElementById(`status-label-${trackId}`);
+      const prog = document.getElementById(`prog-track-${trackId}`);
+
+      if (!card || !pad) return;
+
+      card.className = `track-card ${track.state}`;
+      pad.className = `btn-record-pad state-${track.state}`;
+
+      if (track.state === 'empty') {
+        icon.textContent = '⏺️';
+        label.textContent = 'ריק';
+        if (prog) prog.style.width = '0%';
+      } else if (track.state === 'armed') {
+        icon.textContent = '⏳';
+        label.textContent = 'ממתין לסנכרון';
+      } else if (track.state === 'recording') {
+        icon.textContent = '🔴';
+        label.textContent = 'מקליט...';
+      } else if (track.state === 'playing') {
+        icon.textContent = '▶️';
+        label.textContent = 'מנגן בלופ';
+      }
+    }
+
+    async function handleTrackPadClick(trackId) {
+      const hasMic = await ensureMicAccess();
+      if (!hasMic) return;
+
+      const track = tracks[trackId];
+      if (track.state === 'empty') {
+        track.state = 'armed';
+      } else if (track.state === 'armed') {
+        track.state = 'empty';
+      } else if (track.state === 'recording') {
+        track.state = 'playing';
+      } else if (track.state === 'playing') {
+        if (confirm(`האם להקליט מחדש על ${track.name}?`)) {
+          track.audioBuffer = null;
+          track.state = 'armed';
+        }
+      }
+      updateTrackUI(trackId);
+    }
+
+    function clearTrack(trackId) {
+      const track = tracks[trackId];
+      if (track.currentSource) {
+        try { track.currentSource.stop(); } catch(e) {}
+      }
+      track.audioBuffer = null;
+      track.recordedChunks = [];
+      track.state = 'empty';
+      updateTrackUI(trackId);
+    }
+
+    function setTrackVolume(trackId, val) {
+      const track = tracks[trackId];
+      track.volume = parseFloat(val);
+      applyTrackVolume(track);
+    }
+
+    function toggleMute(trackId) {
+      const track = tracks[trackId];
+      track.isMuted = !track.isMuted;
+      document.getElementById(`btn-mute-${trackId}`).classList.toggle('active-mute', track.isMuted);
+      tracks.forEach(applyTrackVolume);
+    }
+
+    function toggleSolo(trackId) {
+      const track = tracks[trackId];
+      track.isSolo = !track.isSolo;
+      document.getElementById(`btn-solo-${trackId}`).classList.toggle('active-solo', track.isSolo);
+      tracks.forEach(applyTrackVolume);
+    }
+
+    function switchTab(tabName) {
+      const loopsTab = document.getElementById('tabLoopsContent');
+      const vocalsTab = document.getElementById('tabVocalsContent');
+      const loopsBtn = document.getElementById('tabLoopsBtn');
+      const vocalsBtn = document.getElementById('tabVocalsBtn');
+
+      if (tabName === 'loops') {
+        loopsTab.classList.remove('hidden');
+        vocalsTab.classList.add('hidden');
+        loopsBtn.classList.add('active-tab');
+        vocalsBtn.classList.remove('active-tab');
+      } else {
+        loopsTab.classList.add('hidden');
+        vocalsTab.classList.remove('hidden');
+        loopsBtn.classList.remove('active-tab');
+        vocalsBtn.classList.add('active-tab');
+      }
+    }
+
+    function setReverbGain(val) {
+      const num = parseFloat(val);
+      if (vocalReverbGain) vocalReverbGain.gain.value = num;
+      document.getElementById('reverbValText').textContent = `${Math.round(num * 100)}%`;
+    }
+
+    function setDelayGain(val) {
+      const num = parseFloat(val);
+      if (vocalDelayGain) vocalDelayGain.gain.value = num;
+      document.getElementById('delayValText').textContent = `${Math.round(num * 100)}%`;
+    }
+
+    function setVocalInputGain(val) {
+      const num = parseFloat(val);
+      if (vocalPreGain) vocalPreGain.gain.value = num;
+      document.getElementById('vocalVolText').textContent = `${Math.round(num * 100)}%`;
+    }
+
+    async function toggleMonitoring() {
+      await ensureMicAccess();
+      isMonitoringOn = !isMonitoringOn;
+      const statusText = document.getElementById('monitorStatusText');
+      const btn = document.getElementById('btnMonitorToggle');
+
+      if (isMonitoringOn) {
+        if (vocalMonitorGain) vocalMonitorGain.gain.value = 1.0;
+        statusText.textContent = 'פעיל 🟢';
+        btn.textContent = 'כבה שמיעה עצמית';
+        btn.style.background = 'var(--accent-emerald)';
+        btn.style.color = '#000';
+      } else {
+        if (vocalMonitorGain) vocalMonitorGain.gain.value = 0;
+        statusText.textContent = 'כבוי';
+        btn.textContent = 'הפעל שמיעה עצמית';
+        btn.style.background = '#20273d';
+        btn.style.color = 'var(--text-main)';
+      }
+    }
+
+    async function toggleSongRecording() {
+      const hasMic = await ensureMicAccess();
+      if (!hasMic) return;
+
+      const btn = document.getElementById('btnSongRec');
+      const title = document.getElementById('songRecTitle');
+      const timer = document.getElementById('songRecTimer');
+      const icon = document.getElementById('songRecIcon');
+
+      if (!isSongRecording) {
+        isSongRecording = true;
+        songRecChunks = [];
+        songRecSamples = 0;
+        songRecStartTime = Date.now();
+
+        btn.classList.add('recording-active');
+        icon.textContent = '⏹️';
+        title.textContent = 'עצור ושמור שיר מלא';
+
+        songRecTimerInterval = setInterval(() => {
+          const diff = Math.floor((Date.now() - songRecStartTime) / 1000);
+          const mins = String(Math.floor(diff / 60)).padStart(2, '0');
+          const secs = String(diff % 60).padStart(2, '0');
+          timer.textContent = `מקליט שירה חיה עם הביטים: ${mins}:${secs} (לחץ לסיום)`;
+        }, 500);
+
+      } else {
+        isSongRecording = false;
+        clearInterval(songRecTimerInterval);
+
+        btn.classList.remove('recording-active');
+        icon.textContent = '🔴';
+        title.textContent = 'הקלטת שיר מלא (שירה מעל כל הביט)';
+        timer.textContent = 'מעבד וממקסס את השיר...';
+
+        await processSongMixdown();
+      }
+    }
+
+    async function processSongMixdown() {
+      if (songRecSamples === 0) {
+        document.getElementById('songRecTimer').textContent = 'לא נקלט אודיו בהקלטה.';
+        return;
+      }
+
+      const vocalFlat = new Float32Array(songRecSamples);
+      let offset = 0;
+      for (let chunk of songRecChunks) {
+        vocalFlat.set(chunk, offset);
+        offset += chunk.length;
+      }
+
+      const durationSeconds = songRecSamples / audioCtx.sampleRate;
+      const offlineCtx = new OfflineAudioContext(2, Math.floor(44100 * durationSeconds), 44100);
+
+      const loopDuration = (60.0 / bpm) * totalBeats;
+      const activeTracks = tracks.filter(t => t.audioBuffer && !t.isMuted);
+
+      activeTracks.forEach(track => {
+        let startTime = 0;
+        while (startTime < durationSeconds) {
+          const src = offlineCtx.createBufferSource();
+          src.buffer = track.audioBuffer;
+          const g = offlineCtx.createGain();
+          g.gain.value = track.volume;
+          src.connect(g);
+          g.connect(offlineCtx.destination);
+          src.start(startTime);
+          startTime += loopDuration;
+        }
+      });
+
+      const vocalBuffer = offlineCtx.createBuffer(1, songRecSamples, audioCtx.sampleRate);
+      vocalBuffer.getChannelData(0).set(vocalFlat);
+      const vocalSrc = offlineCtx.createBufferSource();
+      vocalSrc.buffer = vocalBuffer;
+      const vocalGain = offlineCtx.createGain();
+      vocalGain.gain.value = 1.0;
+      vocalSrc.connect(vocalGain);
+      vocalGain.connect(offlineCtx.destination);
+      vocalSrc.start(0);
+
+      const renderedSong = await offlineCtx.startRendering();
+      lastRenderedSongBlob = audioBufferToWav(renderedSong);
+
+      const url = URL.createObjectURL(lastRenderedSongBlob);
+      const player = document.getElementById('vocalTakeAudioPlayer');
+      player.src = url;
+      document.getElementById('vocalTakeContainer').classList.remove('hidden');
+      document.getElementById('songRecTimer').textContent = 'טייק השיר מוכן להאזנה ולהורדה!';
+    }
+
+    function downloadLastTake() {
+      if (!lastRenderedSongBlob) return;
+      const url = URL.createObjectURL(lastRenderedSongBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `BeatLooper_SongTake_${bpm}BPM.wav`;
+      a.click();
+    }
+
+    function adjustBpm(delta) {
+      startAudioEngine();
+      bpm = Math.max(50, Math.min(220, bpm + delta));
+      document.getElementById('bpmSlider').value = bpm;
+      document.getElementById('bpmVal').textContent = bpm;
+    }
+
+    document.getElementById('bpmSlider').addEventListener('input', (e) => {
+      startAudioEngine();
+      bpm = parseInt(e.target.value);
+      document.getElementById('bpmVal').textContent = bpm;
+    });
+
+    function tapTempo() {
+      startAudioEngine();
+      const now = performance.now();
+      tapTimes.push(now);
+      if (tapTimes.length > 4) tapTimes.shift();
+      if (tapTimes.length >= 2) {
+        let diffs = [];
+        for (let i = 1; i < tapTimes.length; i++) {
+          diffs.push(tapTimes[i] - tapTimes[i-1]);
+        }
+        const avgDiff = diffs.reduce((a, b) => a + b, 0) / diffs.length;
+        const calculatedBpm = Math.round(60000 / avgDiff);
+        if (calculatedBpm >= 50 && calculatedBpm <= 220) {
+          bpm = calculatedBpm;
+          document.getElementById('bpmSlider').value = bpm;
+          document.getElementById('bpmVal').textContent = bpm;
+        }
+      }
+    }
+
+    function togglePlayMaster() {
+      startAudioEngine();
+      isMasterPlaying = !isMasterPlaying;
+      const btn = document.getElementById('btnPlayMaster');
+      const icon = document.getElementById('playIcon');
+      const text = document.getElementById('playText');
+      if (isMasterPlaying) {
+        btn.classList.add('active');
+        icon.textContent = '⏹️';
+        text.textContent = 'מנגן';
+        if (audioCtx) {
+          currentBeat = 0;
+          nextBeatTime = audioCtx.currentTime;
+        }
+      } else {
+        btn.classList.remove('active');
+        icon.textContent = '▶️';
+        text.textContent = 'מושהה';
+        tracks.forEach(t => {
+          if (t.currentSource) {
+            try { t.currentSource.stop(); } catch(e){}
+          }
+        });
+      }
+    }
+
+    function toggleMetronome() {
+      startAudioEngine();
+      isMetronomeOn = !isMetronomeOn;
+      const btn = document.getElementById('btnMetronome');
+      const text = document.getElementById('metroText');
+      btn.classList.toggle('metro-active', isMetronomeOn);
+      text.textContent = isMetronomeOn ? 'קליק: פעיל' : 'קליק: כבוי';
+    }
+
+    function toggleAutoDrums() {
+      startAudioEngine();
+      isAutoDrumOn = !isAutoDrumOn;
+      const btn = document.getElementById('btnDrumTrack');
+      const text = document.getElementById('drumTrackText');
+      btn.classList.toggle('drum-active', isAutoDrumOn);
+      text.textContent = isAutoDrumOn ? 'ביט: פעיל' : 'ביט: כבוי';
+    }
+
+    function cycleBars() {
+      startAudioEngine();
+      if (bars === 1) bars = 2;
+      else if (bars === 2) bars = 4;
+      else bars = 1;
+
+      totalBeats = bars * beatsPerBar;
+      document.getElementById('barsText').textContent = `${bars} תיבות (${totalBeats} ביטים)`;
+      renderBeatBars();
+    }
+
+    async function exportWav() {
+      startAudioEngine();
+      const activeTracks = tracks.filter(t => t.audioBuffer && !t.isMuted);
+      if (activeTracks.length === 0) {
+        alert("אין ערוצים מוקלטים פעילים לייצוא.");
+        return;
+      }
+
+      const loopDuration = (60.0 / bpm) * totalBeats;
+      const offlineCtx = new OfflineAudioContext(2, Math.floor(44100 * loopDuration), 44100);
+
+      activeTracks.forEach(track => {
+        const src = offlineCtx.createBufferSource();
+        src.buffer = track.audioBuffer;
+        const g = offlineCtx.createGain();
+        g.gain.value = track.volume;
+        src.connect(g);
+        g.connect(offlineCtx.destination);
+        src.start(0);
+      });
+
+      const renderedBuffer = await offlineCtx.startRendering();
+      const wavBlob = audioBufferToWav(renderedBuffer);
+      const url = URL.createObjectURL(wavBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `BeatLooper_Mix_${bpm}BPM.wav`;
+      a.click();
+    }
+
+    function audioBufferToWav(buffer) {
+      const numChannels = buffer.numberOfChannels;
+      const sampleRate = buffer.sampleRate;
+      const format = 1;
+      const bitDepth = 16;
+      
+      const bytesPerSample = bitDepth / 8;
+      const blockAlign = numChannels * bytesPerSample;
+      
+      const length = buffer.length * blockAlign;
+      const bufferArr = new ArrayBuffer(44 + length);
+      const view = new DataView(bufferArr);
+
+      function writeString(view, offset, string) {
+        for (let i = 0; i < string.length; i++) {
+          view.setUint8(offset + i, string.charCodeAt(i));
+        }
+      }
+
+      writeString(view, 0, 'RIFF');
+      view.setUint32(4, 36 + length, true);
+      writeString(view, 8, 'WAVE');
+      writeString(view, 12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, format, true);
+      view.setUint16(22, numChannels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * blockAlign, true);
+      view.setUint16(32, blockAlign, true);
+      view.setUint16(34, bitDepth, true);
+      writeString(view, 36, 'data');
+      view.setUint32(40, length, true);
+
+      let offset = 44;
+      for (let i = 0; i < buffer.length; i++) {
+        for (let ch = 0; ch < numChannels; ch++) {
+          let sample = buffer.getChannelData(ch)[i];
+          sample = Math.max(-1, Math.min(1, sample));
+          sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+          view.setInt16(offset, sample, true);
+          offset += 2;
+        }
+      }
+      return new Blob([bufferArr], { type: 'audio/wav' });
+    }
+
+    renderBeatBars();
+    renderTracks();
+  </script>
+</body>
+</html>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-main);
